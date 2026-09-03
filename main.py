@@ -428,6 +428,156 @@ MENU_DATA = [
         "digimon_name": "레드베라몬", "digimon_emoji": "🔥",
         "digimon_reason": "뜨거운 불꽃의 레드베라몬처럼, 얼큰한 짬뽕이 잘 어울려요.",
     },
+    {
+        "food_emoji": "🍜", "food_name": "냉면",
+        "food_reason": "새콤달콤한 육수에 쫄깃한 면을 시원하게 즐기는 여름 별미예요.",
+        "digimon_name": "우파몬", "digimon_emoji": "🐣",
+        "digimon_reason": "말랑말랑 시원한 우파몬처럼, 얼음 동동 띄운 냉면이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍚", "food_name": "국밥",
+        "food_reason": "뜨끈한 국물에 밥을 말아 든든하게 즐기는 한식 대표 메뉴예요.",
+        "digimon_name": "게코몬", "digimon_emoji": "🐸",
+        "digimon_reason": "느긋하고 편안한 게코몬처럼, 속을 편안하게 채워주는 국밥이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍙", "food_name": "김밥",
+        "food_reason": "다양한 재료를 돌돌 말아 간편하게 즐기는 국민 간식이에요.",
+        "digimon_name": "무시몬", "digimon_emoji": "🐛",
+        "digimon_reason": "돌돌 몸을 마는 무시몬처럼, 돌돌 말린 김밥이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🐟", "food_name": "붕어빵",
+        "food_reason": "겨울철 길거리에서 만나는 달콤한 팥소 가득한 간식이에요.",
+        "digimon_name": "핀몬", "digimon_emoji": "🐠",
+        "digimon_reason": "물고기를 닮은 핀몬처럼, 붕어 모양의 붕어빵이 귀엽게 어울려요.",
+    },
+    {
+        "food_emoji": "🥞", "food_name": "호떡",
+        "food_reason": "바삭한 겉면 속에 달콤한 시럽이 흐르는 겨울 인기 간식이에요.",
+        "digimon_name": "파닥몬", "digimon_emoji": "🐤",
+        "digimon_reason": "포근하고 아기자기한 파닥몬처럼, 따끈한 호떡이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍝", "food_name": "짜장면",
+        "food_reason": "달콤짭짤한 춘장 소스를 비벼 먹는 국민 중화요리예요.",
+        "digimon_name": "임프몬", "digimon_emoji": "😈",
+        "digimon_reason": "장난기 가득한 임프몬처럼, 진한 검정 소스의 짜장면이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🌶️", "food_name": "마라탕",
+        "food_reason": "얼얼하고 강렬한 마라 향이 매력적인 요즘 인기 메뉴예요.",
+        "digimon_name": "데블몬", "digimon_emoji": "👹",
+        "digimon_reason": "강렬한 존재감의 데블몬처럼, 얼얼하고 화끈한 마라탕이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍫", "food_name": "초코케이크",
+        "food_reason": "진한 초콜릿의 달콤함이 가득한 클래식 디저트예요.",
+        "digimon_name": "고블린몬", "digimon_emoji": "👺",
+        "digimon_reason": "익살스러운 고블린몬처럼, 진하고 강렬한 초코케이크가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🥖", "food_name": "바게트샌드위치",
+        "food_reason": "바삭한 바게트에 속재료를 채운 든든한 프랑스식 메뉴예요.",
+        "digimon_name": "소켓몬", "digimon_emoji": "🐁",
+        "digimon_reason": "야무지고 부지런한 소켓몬처럼, 알차게 채운 바게트샌드위치가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍬", "food_name": "마카롱",
+        "food_reason": "겉은 바삭하고 속은 쫀득한 프랑스식 색색깔 디저트예요.",
+        "digimon_name": "니얀몬", "digimon_emoji": "🐱",
+        "digimon_reason": "사랑스럽고 아기자기한 니얀몬처럼, 알록달록 예쁜 마카롱이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🧇", "food_name": "크로플",
+        "food_reason": "크루아상 반죽을 와플처럼 구워 겹겹이 바삭한 인기 디저트예요.",
+        "digimon_name": "팔코몬", "digimon_emoji": "🦅",
+        "digimon_reason": "날렵하고 층층이 우아한 팔코몬처럼, 겹겹이 바삭한 크로플이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍣", "food_name": "유부초밥",
+        "food_reason": "달콤한 유부 속에 새콤한 밥을 채운 부담 없는 메뉴예요.",
+        "digimon_name": "가토몬", "digimon_emoji": "🐈‍⬛",
+        "digimon_reason": "우아하고 단정한 가토몬처럼, 깔끔한 유부초밥이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍗", "food_name": "닭갈비",
+        "food_reason": "매콤달콤한 양념에 볶아낸 쫄깃한 닭고기 요리예요.",
+        "digimon_name": "하그루몬", "digimon_emoji": "🐣",
+        "digimon_reason": "활발하고 씩씩한 하그루몬처럼, 매콤하고 활기찬 닭갈비가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍲", "food_name": "부대찌개",
+        "food_reason": "햄과 소시지가 듬뿍 들어간 얼큰하고 든든한 찌개예요.",
+        "digimon_name": "도루몬", "digimon_emoji": "🐉",
+        "digimon_reason": "다채로운 매력의 도루몬처럼, 여러 재료가 어우러진 부대찌개가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🥬", "food_name": "잡채",
+        "food_reason": "쫄깃한 당면과 알록달록한 채소가 어우러진 잔칫날 메뉴예요.",
+        "digimon_name": "안젤몬", "digimon_emoji": "😇",
+        "digimon_reason": "우아하고 축복 가득한 안젤몬처럼, 잔치 분위기의 잡채가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍖", "food_name": "탕수육",
+        "food_reason": "바삭한 튀김에 새콤달콤한 소스를 부어 먹는 인기 중화요리예요.",
+        "digimon_name": "이바몬", "digimon_emoji": "🐗",
+        "digimon_reason": "듬직하고 씩씩한 이바몬처럼, 바삭하고 든든한 탕수육이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍝", "food_name": "라자냐",
+        "food_reason": "치즈와 미트소스를 겹겹이 쌓아 구운 든든한 이탈리안 요리예요.",
+        "digimon_name": "미노몬", "digimon_emoji": "🐂",
+        "digimon_reason": "묵직하고 겹겹이 강인한 미노몬처럼, 층층이 든든한 라자냐가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🥗", "food_name": "시저샐러드",
+        "food_reason": "고소한 파마산 치즈와 바삭한 크루통이 어우러진 샐러드예요.",
+        "digimon_name": "엔젤우몬", "digimon_emoji": "👼",
+        "digimon_reason": "청초하고 우아한 엔젤우몬처럼, 깔끔한 시저샐러드가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🥤", "food_name": "밀크셰이크",
+        "food_reason": "부드럽고 진한 우유의 달콤함이 가득한 시원한 음료예요.",
+        "digimon_name": "모모몬", "digimon_emoji": "🐒",
+        "digimon_reason": "장난스럽고 발랄한 모모몬처럼, 부드럽고 달콤한 밀크셰이크가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍩", "food_name": "츄러스",
+        "food_reason": "겉은 바삭하고 설탕이 솔솔 뿌려진 축제 대표 간식이에요.",
+        "digimon_name": "코쿠와몬", "digimon_emoji": "🐨",
+        "digimon_reason": "느긋하고 귀여운 코쿠와몬처럼, 달콤한 츄러스가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍜", "food_name": "냉모밀",
+        "food_reason": "차갑고 깔끔한 육수에 메밀면을 찍어 먹는 시원한 여름 메뉴예요.",
+        "digimon_name": "베타몬", "digimon_emoji": "🐡",
+        "digimon_reason": "물속에서 유영하는 베타몬처럼, 시원한 냉모밀이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍲", "food_name": "감자탕",
+        "food_reason": "뼈에 붙은 살을 발라먹는 재미가 있는 얼큰하고 든든한 탕이에요.",
+        "digimon_name": "오뮤라몬", "digimon_emoji": "🦣",
+        "digimon_reason": "듬직하고 커다란 오뮤라몬처럼, 푸짐한 감자탕이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🐙", "food_name": "물회",
+        "food_reason": "새콤한 초고추장 육수에 신선한 회를 즐기는 여름 별미예요.",
+        "digimon_name": "옥토몬", "digimon_emoji": "🐙",
+        "digimon_reason": "바다에서 온 옥토몬처럼, 싱싱한 물회가 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍪", "food_name": "스콘",
+        "food_reason": "포슬포슬한 식감에 잼과 크림을 곁들여 먹는 티타임 디저트예요.",
+        "digimon_name": "포메몬", "digimon_emoji": "🐾",
+        "digimon_reason": "포근하고 소박한 포메몬처럼, 담백한 스콘이 잘 어울려요.",
+    },
+    {
+        "food_emoji": "🍫", "food_name": "브라우니",
+        "food_reason": "진하고 촉촉한 초콜릿이 가득한 묵직한 디저트예요.",
+        "digimon_name": "다크티라노몬", "digimon_emoji": "🖤",
+        "digimon_reason": "강렬하고 묵직한 다크티라노몬처럼, 진한 브라우니가 잘 어울려요.",
+    },
 ]
 
 # -----------------------------------------------------------
@@ -493,17 +643,25 @@ st.markdown(
 st.write("")  # 여백을 위한 빈 줄
 
 # -----------------------------------------------------------
-# 6. 메뉴 추천 버튼 (맨 위)
-#    - 이 버튼은 처음 추천을 시작할 때만 사용합니다.
+# 6. 메뉴 추천 / 다시 추천 버튼 (맨 위, 같은 위치)
+#    - 처음에는 "메뉴 추천" 버튼만 보이고,
+#      한 번이라도 추천을 받은 뒤에는 같은 자리에 "다시 추천" 버튼이 나타납니다.
 #    - use_container_width=True로 버튼을 넓게 보이게 합니다.
 # -----------------------------------------------------------
-if st.button("🍽️ 메뉴 추천", use_container_width=True, type="primary"):
-    st.session_state.selected_menu = pick_random_menu()
+if st.session_state.selected_menu is None:
+    # 아직 한 번도 추천하지 않았을 때 -> "메뉴 추천" 버튼만 표시
+    if st.button("🍽️ 메뉴 추천", use_container_width=True, type="primary"):
+        st.session_state.selected_menu = pick_random_menu()
+        st.rerun()
+else:
+    # 이미 추천을 받은 뒤에는 같은 위치에 "다시 추천" 버튼을 표시
+    if st.button("🔄 다시 추천", use_container_width=True, type="primary"):
+        st.session_state.selected_menu = pick_random_menu()
+        st.rerun()
 
 # -----------------------------------------------------------
 # 7. 추천 결과 보여주기
 #    - 아직 버튼을 누르지 않았다면 결과 영역은 보이지 않습니다.
-#    - 결과가 나온 자리 맨 아래에는 "다시 추천" 버튼을 별도로 둡니다.
 # -----------------------------------------------------------
 menu = st.session_state.selected_menu
 
@@ -537,12 +695,6 @@ if menu is not None:
         """,
         unsafe_allow_html=True,
     )
-
-    # (3) 결과 바로 아래에 있는 "다시 추천" 버튼
-    #     - key를 다르게 지정해서 위쪽 버튼과 구분되는 별개의 버튼으로 만듭니다.
-    if st.button("🔄 다시 추천", use_container_width=True, key="retry_button"):
-        st.session_state.selected_menu = pick_random_menu()
-        st.rerun()  # 결과를 새로고침해서 바로 화면에 반영합니다.
 else:
     # 버튼을 아직 누르지 않았을 때 보여줄 안내 문구
     st.info("위의 '메뉴 추천' 버튼을 눌러서 오늘의 메뉴와 디지몬을 확인해보세요!")
