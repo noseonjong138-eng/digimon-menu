@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디지몬의 메뉴 추천</title>
+<style>
+  :root{
+    --cream: #FFF8EC;
+    --cream-card: #FFFDF7;
+    --blue: #4A90E2;
+    --blue-dark: #2F6BC4;
+    --blue-light: #D6EAFB;
+    --text: #3E3226;
+    --shadow: rgba(74, 144, 226, 0.25);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #FFF8EC 0%, #EAF3FC 100%);
+    font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px 64px;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  header .title-emoji {
+    font-size: 52px;
+    line-height: 1;
+  }
+
+  h1 {
+    font-size: 32px;
+    margin: 12px 0 6px;
+    color: var(--blue-dark);
+  }
+
+  header p {
+    font-size: 18px;
+    color: #8A7A63;
+    margin: 0;
+  }
+
+  .btn-area {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    border-radius: 100px;
+    font-weight: 700;
+  }
+
+  #recommendBtn {
+    font-size: 22px;
+    padding: 18px 44px;
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 8px 0 var(--blue-dark);
+    transition: transform 0.08s ease;
+  }
+
+  #recommendBtn:active {
+    transform: translateY(6px);
+    box-shadow: 0 2px 0 var(--blue-dark);
+  }
+
+  .card {
+    display: none;
+    background: var(--cream-card);
+    border: 3px solid var(--blue-light);
+    border-radius: 28px;
+    padding: 28px 24px;
+    box-shadow: 0 12px 28px var(--shadow);
+    animation: pop 0.35s ease;
+  }
+
+  .card.show { display: block; }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .section-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    background: var(--blue-light);
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+
+  .food-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 220px;
+    border-radius: 22px;
+    background: linear-gradient(160deg, #FFE9C7, #FFD9A0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 96px;
+    margin-bottom: 10px;
+    box-shadow: inset 0 0 0 4px #fff;
+  }
+
+  .food-name {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 26px;
+    color: var(--text);
+  }
+
+  .reason-box {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 14px 18px;
+    font-size: 17px;
+    line-height: 1.55;
+    margin-bottom: 24px;
+    color: #5B4C3A;
+  }
+
+  .digimon-box {
+    text-align: center;
+    background: var(--blue-light);
+    border-radius: 22px;
+    padding: 24px 18px;
+    margin-bottom: 20px;
+  }
+
+  .digimon-emoji {
+    font-size: 88px;
+    line-height: 1;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .digimon-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--blue-dark);
+    margin-bottom: 10px;
+  }
+
+  .digimon-reason {
+    font-size: 17px;
+    line-height: 1.55;
+    color: #3E5A80;
+  }
+
+  .side-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #FFF3DC;
+    border-radius: 18px;
+    padding: 16px 18px;
+  }
+
+  .side-emoji {
+    font-size: 44px;
+    flex-shrink: 0;
+  }
+
+  .side-text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .side-text b {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 2px;
+    color: var(--blue-dark);
+  }
+
+  #retryBtn {
+    display: block;
+    margin: 24px auto 0;
+    font-size: 18px;
+    padding: 12px 30px;
+    background: var(--cream-card);
+    border: 2px solid var(--blue);
+    color: var(--blue-dark);
+  }
+
+  #retryBtn:hover { background: var(--blue-light); }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="title-emoji">🍽️🦖</div>
+    <h1>디지몬의 메뉴 추천</h1>
+    <p>오늘 뭐 먹을지 디지몬이 골라줄게요!</p>
+  </header>
+
+  <div class="btn-area">
+    <button id="recommendBtn" onclick="recommend()">메뉴 추천</button>
+  </div>
+
+  <div class="card" id="card">
+    <span class="section-label">오늘의 음식</span>
+    <div class="food-photo" id="foodPhoto"></div>
+    <div class="food-name" id="foodName"></div>
+
+    <div class="reason-box" id="foodReason"></div>
+
+    <span class="section-label">어울리는 디지몬</span>
+    <div class="digimon-box">
+      <span class="digimon-emoji" id="digimonEmoji"></span>
+      <div class="digimon-name" id="digimonName"></div>
+      <div class="digimon-reason" id="digimonReason"></div>
+    </div>
+
+    <span class="section-label">같이 먹으면 좋아요</span>
+    <div class="side-box">
+      <div class="side-emoji" id="sideEmoji"></div>
+      <div class="side-text">
+        <b id="sideName"></b>
+        <span id="sideReason"></span>
+      </div>
+    </div>
+
+    <button id="retryBtn" onclick="recommend()">🔄 다시 추천</button>
+  </div>
+</div>
+
+<script>
+const data = [
+  {
+    foodEmoji: "🍕",
+    foodName: "피자",
+    foodReason: "치즈가 쭉 늘어나는 재미와 뜨끈한 도우가 매력적인 만능 인기 메뉴예요.",
+    digimonName: "그레이몬",
+    digimonEmoji: "🦖",
+    digimonReason: "화끈한 불꽃 파워를 가진 그레이몬처럼, 뜨겁게 구워낸 피자가 딱 어울려요!",
+    sideEmoji: "🥤",
+    sideName: "콜라",
+    sideReason: "느끼한 치즈를 시원하게 씻어내려 줘요."
+  },
+  {
+    foodEmoji: "🍜",
+    foodName: "라멘",
+    foodReason: "진한 국물과 쫄깃한 면발로 속을 든든하게 채워주는 메뉴예요.",
+    digimonName: "가부몬",
+    digimonEmoji: "🐢",
+    digimonReason: "물속에서 유유히 헤엄치는 가부몬처럼, 뜨끈한 국물 속 면발이 편안하게 어울려요.",
+    sideEmoji: "🥟",
+    sideName: "교자만두",
+    sideReason: "바삭한 만두가 국물 요리와 찰떡궁합이에요."
+  },
+  {
+    foodEmoji: "🍣",
+    foodName: "초밥",
+    foodReason: "신선한 재료를 한입에 즐길 수 있는 정갈하고 산뜻한 메뉴예요.",
+    digimonName: "빙헤몬",
+    digimonEmoji: "🐬",
+    digimonReason: "차가운 바다를 가르는 빙헤몬처럼, 시원하고 깔끔한 초밥이 잘 어울려요.",
+    sideEmoji: "🍵",
+    sideName: "녹차",
+    sideReason: "입안을 개운하게 정리해줘요."
+  },
+  {
+    foodEmoji: "🍔",
+    foodName: "햄버거",
+    foodReason: "두툼한 패티와 신선한 채소를 한 번에 즐길 수 있는 든든한 메뉴예요.",
+    digimonName: "레오몬",
+    digimonEmoji: "🦁",
+    digimonReason: "힘차고 늠름한 레오몬처럼, 육즙 가득한 패티의 파워가 잘 어울려요.",
+    sideEmoji: "🍟",
+    sideName: "감자튀김",
+    sideReason: "바삭함이 두 배가 되는 정석 조합이에요."
+  },
+  {
+    foodEmoji: "🍦",
+    foodName: "아이스크림",
+    foodReason: "더운 날 시원하게 즐기기 좋은 달콤한 디저트예요.",
+    digimonName: "유키다루몬",
+    digimonEmoji: "⛄",
+    digimonReason: "눈으로 만들어진 유키다루몬처럼, 시원하고 차가운 아이스크림이 딱 어울려요!",
+    sideEmoji: "🍪",
+    sideName: "쿠키",
+    sideReason: "바삭한 식감이 부드러운 아이스크림과 잘 어울려요."
+  },
+  {
+    foodEmoji: "🍛",
+    foodName: "카레라이스",
+    foodReason: "향긋한 향신료와 부드러운 밥이 어우러진 든든한 한 그릇 메뉴예요.",
+    digimonName: "아구몬",
+    digimonEmoji: "🐊",
+    digimonReason: "활기차고 씩씩한 아구몬처럼, 매콤하고 든든한 카레가 잘 어울려요.",
+    sideEmoji: "🥗",
+    sideName: "양배추 샐러드",
+    sideReason: "상큼한 채소가 카레의 진한 맛을 산뜻하게 정리해줘요."
+  },
+  {
+    foodEmoji: "🥩",
+    foodName: "스테이크",
+    foodReason: "겉은 바삭하고 속은 육즙 가득한 고급스러운 메뉴예요.",
+    digimonName: "워그레이몬",
+    digimonEmoji: "🐲",
+    digimonReason: "강력하고 위엄있는 워그레이몬처럼, 묵직한 존재감의 스테이크가 잘 어울려요.",
+    sideEmoji: "🍷",
+    sideName: "구운 야채",
+    sideReason: "고소한 채소가 고기의 풍미를 더 살려줘요."
+  },
+  {
+    foodEmoji: "🍰",
+    foodName: "딸기 케이크",
+    foodReason: "폭신한 시트와 달콤한 딸기가 어우러진 사랑스러운 디저트예요.",
+    digimonName: "삐요몬",
+    digimonEmoji: "🐤",
+    digimonReason: "귀엽고 사랑스러운 삐요몬처럼, 예쁘고 달콤한 케이크가 잘 어울려요!",
+    sideEmoji: "☕",
+    sideName: "밀크티",
+    sideReason: "부드러운 단맛이 케이크와 조화롭게 어울려요."
+  },
+  {
+    foodEmoji: "🍝",
+    foodName: "크림 파스타",
+    foodReason: "부드럽고 고소한 크림소스가 면에 듬뿍 감기는 인기 메뉴예요.",
+    digimonName: "텐타몬",
+    digimonEmoji: "🦂",
+    digimonReason: "지혜롭고 차분한 텐타몬처럼, 부드럽고 진중한 크림 맛이 잘 어울려요.",
+    sideEmoji: "🥖",
+    sideName: "마늘빵",
+    sideReason: "바삭한 빵으로 남은 소스까지 알뜰하게 즐길 수 있어요."
+  },
+  {
+    foodEmoji: "🍗",
+    foodName: "치킨",
+    foodReason: "겉바속촉 튀김옷과 육즙이 만나는 국민 야식 메뉴예요.",
+    digimonName: "가루몬",
+    digimonEmoji: "🐺",
+    digimonReason: "날렵하고 파워풀한 가루몬처럼, 바삭하고 강렬한 치킨이 잘 어울려요!",
+    sideEmoji: "🍺",
+    sideName: "탄산음료",
+    sideReason: "느끼함을 씻어주는 완벽한 짝꿍이에요."
+  },
+  {
+    foodEmoji: "🍩",
+    foodName: "도넛",
+    foodReason: "폭신폭신하고 달콤한 글레이즈가 매력적인 간식이에요.",
+    digimonName: "코로몬",
+    digimonEmoji: "🐣",
+    digimonReason: "동글동글 귀여운 코로몬처럼, 동그랗고 달콤한 도넛이 잘 어울려요!",
+    sideEmoji: "🥛",
+    sideName: "우유",
+    sideReason: "부드러운 우유가 달콤함을 편안하게 감싸줘요."
+  },
+  {
+    foodEmoji: "🍱",
+    foodName: "도시락",
+    foodReason: "다양한 반찬을 한 번에 골고루 즐길 수 있는 알찬 한 끼예요.",
+    digimonName: "파피몬",
+    digimonEmoji: "🐶",
+    digimonReason: "부지런하고 씩씩한 파피몬처럼, 알차게 채워진 도시락이 잘 어울려요.",
+    sideEmoji: "🍊",
+    sideName: "귤",
+    sideReason: "상큼한 과일로 입가심하기 좋아요."
+  },
+  {
+    foodEmoji: "🌮",
+    foodName: "타코",
+    foodReason: "바삭한 토르티야에 매콤한 재료를 가득 채운 개성 있는 메뉴예요.",
+    digimonName: "고마몬",
+    digimonEmoji: "🦭",
+    digimonReason: "명랑하고 활발한 고마몬처럼, 톡톡 튀는 매콤한 맛이 잘 어울려요!",
+    sideEmoji: "🥑",
+    sideName: "과카몰레",
+    sideReason: "부드러운 아보카도 소스가 매콤함을 달래줘요."
+  },
+  {
+    foodEmoji: "🍲",
+    foodName: "전골",
+    foodReason: "여러 재료를 함께 끓여 깊은 맛을 내는 푸짐한 나눔 요리예요.",
+    digimonName: "엘레키몬",
+    digimonEmoji: "⚡",
+    digimonReason: "보글보글 끓어오르는 전골이, 짜릿한 전기 파워의 엘레키몬과 잘 어울려요.",
+    sideEmoji: "🍚",
+    sideName: "공깃밥",
+    sideReason: "진한 국물에 말아 먹으면 든든해요."
+  },
+  {
+    foodEmoji: "🥞",
+    foodName: "팬케이크",
+    foodReason: "폭신한 층층이 시럽이 스며드는 달콤한 브런치 메뉴예요.",
+    digimonName: "테리어몬",
+    digimonEmoji: "🐇",
+    digimonReason: "포근하고 사랑스러운 테리어몬처럼, 폭신폭신한 팬케이크가 잘 어울려요.",
+    sideEmoji: "🍓",
+    sideName: "딸기",
+    sideReason: "상큼한 과일이 달콤함을 한층 살려줘요."
+  },
+  {
+    foodEmoji: "🍤",
+    foodName: "새우튀김",
+    foodReason: "바삭한 튀김옷 속 탱글한 새우가 매력적인 메뉴예요.",
+    digimonName: "쟈미몬",
+    digimonEmoji: "🦐",
+    digimonReason: "바다에서 온 쟈미몬처럼, 바다의 맛을 담은 새우튀김이 잘 어울려요.",
+    sideEmoji: "🍋",
+    sideName: "레몬즙",
+    sideReason: "상큼함이 튀김의 기름진 맛을 잡아줘요."
+  },
+  {
+    foodEmoji: "🥪",
+    foodName: "샌드위치",
+    foodReason: "신선한 채소와 속재료를 간편하게 즐길 수 있는 메뉴예요.",
+    digimonName: "빅고몬",
+    digimonEmoji: "🐗",
+    digimonReason: "듬직하고 푸짐한 빅고몬처럼, 재료가 가득 든 샌드위치가 잘 어울려요.",
+    sideEmoji: "🥤",
+    sideName: "오렌지주스",
+    sideReason: "상큼한 주스가 든든한 한 끼를 가볍게 해줘요."
+  },
+  {
+    foodEmoji: "🍡",
+    foodName: "경단",
+    foodReason: "쫄깃한 식감과 은은한 단맛이 매력적인 전통 간식이에요.",
+    digimonName: "펜몬",
+    digimonEmoji: "🐧",
+    digimonReason: "아기자기하고 귀여운 펜몬처럼, 앙증맞은 경단이 잘 어울려요.",
+    sideEmoji: "🍵",
+    sideName: "말차",
+    sideReason: "은은한 쓴맛이 단맛을 균형있게 잡아줘요."
+  },
+  {
+    foodEmoji: "🍳",
+    foodName: "오믈렛",
+    foodReason: "부드럽고 폭신한 달걀에 속재료를 감싼 든든한 메뉴예요.",
+    digimonName: "비요몬",
+    digimonEmoji: "🐥",
+    digimonReason: "따뜻하고 다정한 비요몬처럼, 포근한 오믈렛이 잘 어울려요.",
+    sideEmoji: "🍞",
+    sideName: "토스트",
+    sideReason: "바삭한 빵과 함께면 아침 식사로 완벽해요."
+  },
+  {
+    foodEmoji: "🍢",
+    foodName: "어묵꼬치",
+    foodReason: "따뜻한 국물과 함께 즐기는 쫄깃한 길거리 간식이에요.",
+    digimonName: "오타몬",
+    digimonEmoji: "🐙",
+    digimonReason: "말랑말랑 유연한 오타몬처럼, 쫄깃한 어묵이 잘 어울려요.",
+    sideEmoji: "🌶️",
+    sideName: "떡볶이",
+    sideReason: "매콤달콤한 맛이 어묵 국물과 찰떡궁합이에요."
+  },
+  {
+    foodEmoji: "🍨",
+    foodName: "빙수",
+    foodReason: "얼음을 곱게 갈아 시원하게 즐기는 여름 별미예요.",
+    digimonName: "프리지몬",
+    digimonEmoji: "🧊",
+    digimonReason: "차가운 얼음의 힘을 가진 프리지몬처럼, 시원한 빙수가 딱 어울려요!",
+    sideEmoji: "🍯",
+    sideName: "꿀",
+    sideReason: "달콤함을 더해 풍미를 살려줘요."
+  },
+  {
+    foodEmoji: "🥟",
+    foodName: "만두",
+    foodReason: "육즙 가득한 소를 얇은 피로 감싼 든든한 메뉴예요.",
+    digimonName: "아르마디몬",
+    digimonEmoji: "🦔",
+    digimonReason: "동그랗게 몸을 마는 아르마디몬처럼, 동글동글한 만두가 잘 어울려요.",
+    sideEmoji: "🥢",
+    sideName: "간장 소스",
+    sideReason: "새콤짭짤한 소스로 풍미를 더해줘요."
+  },
+  {
+    foodEmoji: "🍙",
+    foodName: "주먹밥",
+    foodReason: "간편하게 들고 먹기 좋은 든든한 한 끼 메뉴예요.",
+    digimonName: "펄몬",
+    digimonEmoji: "🌱",
+    digimonReason: "소박하고 정겨운 펄몬처럼, 담백한 주먹밥이 잘 어울려요.",
+    sideEmoji: "🍥",
+    sideName: "미소국",
+    sideReason: "따뜻한 국물이 식사를 든든하게 마무리해줘요."
+  },
+  {
+    foodEmoji: "🧇",
+    foodName: "와플",
+    foodReason: "겉은 바삭하고 속은 촉촉한 달콤한 디저트예요.",
+    digimonName: "빠타몬",
+    digimonEmoji: "🦇",
+    digimonReason: "통통 튀는 빠타몬처럼, 격자무늬가 통통 튀는 와플이 잘 어울려요.",
+    sideEmoji: "🍨",
+    sideName: "아이스크림 한 스쿱",
+    sideReason: "따뜻한 와플과 차가운 아이스크림의 조합이 환상적이에요."
+  },
+  {
+    foodEmoji: "🍉",
+    foodName: "수박화채",
+    foodReason: "시원한 수박과 탄산이 만나는 상큼한 여름 디저트예요.",
+    digimonName: "팔몬",
+    digimonEmoji: "🌴",
+    digimonReason: "싱그러운 자연을 닮은 팔몬처럼, 상큼한 수박화채가 잘 어울려요.",
+    sideEmoji: "🍧",
+    sideName: "셔벗",
+    sideReason: "비슷한 청량감으로 더위를 확실히 잡아줘요."
+  },
+  {
+    foodEmoji: "🍅",
+    foodName: "토마토 파스타",
+    foodReason: "새콤한 토마토소스와 면이 어우러진 상큼한 이탈리안 메뉴예요.",
+    digimonName: "토코몬",
+    digimonEmoji: "🐦",
+    digimonReason: "발랄하고 상큼한 토코몬처럼, 새콤한 토마토소스가 잘 어울려요.",
+    sideEmoji: "🧀",
+    sideName: "파마산 치즈",
+    sideReason: "고소함을 더해 풍미를 한층 살려줘요."
+  },
+  {
+    foodEmoji: "🍖",
+    foodName: "갈비",
+    foodReason: "달콤짭짤한 양념이 배어든 육즙 가득한 대표 한식 메뉴예요.",
+    digimonName: "몬조몬",
+    digimonEmoji: "🐒",
+    digimonReason: "재주 많고 활기찬 몬조몬처럼, 다채로운 양념 맛의 갈비가 잘 어울려요.",
+    sideEmoji: "🥬",
+    sideName: "쌈채소",
+    sideReason: "아삭한 채소로 고기 맛을 깔끔하게 즐길 수 있어요."
+  },
+  {
+    foodEmoji: "🥧",
+    foodName: "애플파이",
+    foodReason: "바삭한 페이스트리 속 달콤한 사과가 가득한 클래식 디저트예요.",
+    digimonName: "폭스몬",
+    digimonEmoji: "🦊",
+    digimonReason: "영리하고 따뜻한 폭스몬처럼, 정겨운 애플파이가 잘 어울려요.",
+    sideEmoji: "🍦",
+    sideName: "바닐라 아이스크림",
+    sideReason: "따뜻한 파이와 차가운 아이스크림의 조합이 일품이에요."
+  },
+  {
+    foodEmoji: "🍆",
+    foodName: "가지구이",
+    foodReason: "부드럽고 고소하게 구워낸 담백한 채소 요리예요.",
+    digimonName: "베지몬",
+    digimonEmoji: "🌿",
+    digimonReason: "자연을 다스리는 베지몬처럼, 신선한 채소 요리가 잘 어울려요.",
+    sideEmoji: "🫒",
+    sideName: "올리브",
+    sideReason: "짭짤한 감칠맛이 채소 요리를 더 맛있게 해줘요."
+  },
+  {
+    foodEmoji: "🍮",
+    foodName: "푸딩",
+    foodReason: "부드럽고 매끈한 식감에 달콤한 캐러멜이 어우러진 디저트예요.",
+    digimonName: "젤리몬",
+    digimonEmoji: "🍮",
+    digimonReason: "말랑말랑 젤리 같은 젤리몬처럼, 몰캉한 푸딩이 잘 어울려요.",
+    sideEmoji: "☕",
+    sideName: "카페라떼",
+    sideReason: "쌉싸름한 커피가 달콤함을 균형있게 잡아줘요."
+  },
+  {
+    foodEmoji: "🍲",
+    foodName: "된장찌개",
+    foodReason: "구수하고 깊은 맛이 밥과 잘 어울리는 든든한 한식 메뉴예요.",
+    digimonName: "고츠몬",
+    digimonEmoji: "💀",
+    digimonReason: "묵직하고 강인한 고츠몬처럼, 진하고 구수한 된장찌개가 잘 어울려요.",
+    sideEmoji: "🍚",
+    sideName: "흰쌀밥",
+    sideReason: "고소한 밥과 함께면 완벽한 한 끼가 돼요."
+  },
+  {
+    foodEmoji: "🥘",
+    foodName: "파에야",
+    foodReason: "해산물과 쌀이 어우러진 향긋한 스페인 대표 요리예요.",
+    digimonName: "슈웅몬",
+    digimonEmoji: "🦅",
+    digimonReason: "하늘을 자유롭게 나는 슈웅몬처럼, 이국적인 파에야가 잘 어울려요.",
+    sideEmoji: "🍷",
+    sideName: "샹그리아",
+    sideReason: "과일향 가득한 음료가 풍미를 더 살려줘요."
+  },
+  {
+    foodEmoji: "🍿",
+    foodName: "팝콘",
+    foodReason: "바삭하고 가볍게 즐기기 좋은 대표 간식이에요.",
+    digimonName: "치빗몬",
+    digimonEmoji: "🐿️",
+    digimonReason: "발랄하고 통통 튀는 치빗몬처럼, 톡톡 튀는 팝콘이 잘 어울려요!",
+    sideEmoji: "🥤",
+    sideName: "탄산음료",
+    sideReason: "청량한 음료와 함께면 극장 간식 완성이에요."
+  },
+  {
+    foodEmoji: "🍄",
+    foodName: "버섯전골",
+    foodReason: "다양한 버섯의 향과 깊은 국물맛이 매력적인 요리예요.",
+    digimonName: "모지몬",
+    digimonEmoji: "🍄",
+    digimonReason: "버섯을 닮은 모지몬처럼, 향긋한 버섯전골이 찰떡같이 어울려요.",
+    sideEmoji: "🍶",
+    sideName: "따뜻한 차",
+    sideReason: "은은한 향이 버섯의 풍미를 더 살려줘요."
+  },
+  {
+    foodEmoji: "🍕",
+    foodName: "고구마피자",
+    foodReason: "달콤한 고구마무스와 치즈가 어우러진 인기 피자예요.",
+    digimonName: "밈몬",
+    digimonEmoji: "🐐",
+    digimonReason: "포근하고 다정한 밈몬처럼, 부드럽고 달콤한 고구마피자가 잘 어울려요.",
+    sideEmoji: "🥤",
+    sideName: "아이스티",
+    sideReason: "달콤함을 상큼하게 잡아줘요."
+  },
+  {
+    foodEmoji: "🍜",
+    foodName: "우동",
+    foodReason: "굵고 쫄깃한 면발과 담백한 국물이 매력적인 메뉴예요.",
+    digimonName: "고구몬",
+    digimonEmoji: "🐹",
+    digimonReason: "포동포동 귀여운 고구몬처럼, 통통한 면발의 우동이 잘 어울려요.",
+    sideEmoji: "🍙",
+    sideName: "이나리스시",
+    sideReason: "달콤한 유부초밥이 우동과 잘 어울려요."
+  },
+  {
+    foodEmoji: "🥓",
+    foodName: "베이컨",
+    foodReason: "짭짤하고 고소한 감칠맛이 가득한 인기 재료예요.",
+    digimonName: "부탐몬",
+    digimonEmoji: "🐖",
+    digimonReason: "통통하고 넉넉한 부탐몬처럼, 고소한 베이컨이 잘 어울려요.",
+    sideEmoji: "🍳",
+    sideName: "달걀후라이",
+    sideReason: "든든한 아침 식사로 완벽한 조합이에요."
+  },
+  {
+    foodEmoji: "🦀",
+    foodName: "게찜",
+    foodReason: "쫄깃하고 달콤한 속살이 매력적인 고급 해산물 요리예요.",
+    digimonName: "샤크몬",
+    digimonEmoji: "🦈",
+    digimonReason: "바다를 지배하는 샤크몬처럼, 바다의 진미인 게찜이 잘 어울려요.",
+    sideEmoji: "🧈",
+    sideName: "버터소스",
+    sideReason: "고소한 버터가 게살의 단맛을 살려줘요."
+  },
+  {
+    foodEmoji: "🍇",
+    foodName: "과일 타르트",
+    foodReason: "바삭한 타르트지 위에 새콤달콤한 과일을 올린 디저트예요.",
+    digimonName: "플로라몬",
+    digimonEmoji: "🌸",
+    digimonReason: "꽃처럼 화사한 플로라몬처럼, 알록달록한 과일 타르트가 잘 어울려요.",
+    sideEmoji: "🍵",
+    sideName: "허브티",
+    sideReason: "은은한 향이 과일의 상큼함을 더 살려줘요."
+  },
+  {
+    foodEmoji: "🍳",
+    foodName: "계란찜",
+    foodReason: "부드럽고 폭신한 식감의 순한 반찬이에요.",
+    digimonName: "타네몬",
+    digimonEmoji: "🌾",
+    digimonReason: "소박하고 순한 타네몬처럼, 부드러운 계란찜이 잘 어울려요.",
+    sideEmoji: "🍚",
+    sideName: "잡곡밥",
+    sideReason: "고소한 잡곡밥과 함께면 든든한 한 끼가 돼요."
+  },
+  {
+    foodEmoji: "🍛",
+    foodName: "규동",
+    foodReason: "달콤짭짤한 소스에 볶은 소고기와 양파를 얹은 일본식 덮밥이에요.",
+    digimonName: "베어몬",
+    digimonEmoji: "🐻",
+    digimonReason: "든든하고 푸짐한 베어몬처럼, 배부른 규동이 잘 어울려요.",
+    sideEmoji: "🥢",
+    sideName: "단무지",
+    sideReason: "아삭한 단무지가 느끼함을 잡아줘요."
+  },
+  {
+    foodEmoji: "🍋",
+    foodName: "레몬에이드",
+    foodReason: "새콤달콤하고 청량감 가득한 여름 음료예요.",
+    digimonName: "스카몬",
+    digimonEmoji: "🐦‍⬛",
+    digimonReason: "가볍고 산뜻한 스카몬처럼, 상큼한 레몬에이드가 잘 어울려요.",
+    sideEmoji: "🍪",
+    sideName: "레몬쿠키",
+    sideReason: "비슷한 상큼함으로 조화를 이뤄요."
+  },
+  {
+    foodEmoji: "🍲",
+    foodName: "삼계탕",
+    foodReason: "인삼과 닭을 푹 고아낸 몸보신 대표 보양식이에요.",
+    digimonName: "호크몬",
+    digimonEmoji: "🦅",
+    digimonReason: "강인한 힘을 지닌 호크몬처럼, 든든한 보양식 삼계탕이 잘 어울려요.",
+    sideEmoji: "🧄",
+    sideName: "다진 마늘",
+    sideReason: "알싸한 향이 국물의 풍미를 더해줘요."
+  },
+  {
+    foodEmoji: "🍨",
+    foodName: "젤라또",
+    foodReason: "진하고 부드러운 이탈리안 스타일 아이스크림이에요.",
+    digimonName: "스노우고아몬",
+    digimonEmoji: "❄️",
+    digimonReason: "새하얀 눈을 닮은 스노우고아몬처럼, 부드러운 젤라또가 잘 어울려요.",
+    sideEmoji: "🍫",
+    sideName: "초코시럽",
+    sideReason: "진한 단맛으로 풍미를 더 살려줘요."
+  },
+  {
+    foodEmoji: "🥗",
+    foodName: "그릭샐러드",
+    foodReason: "신선한 채소와 페타치즈가 어우러진 건강한 메뉴예요.",
+    digimonName: "라비몬",
+    digimonEmoji: "🐰",
+    digimonReason: "가볍고 활기찬 라비몬처럼, 상큼한 그릭샐러드가 잘 어울려요.",
+    sideEmoji: "🫓",
+    sideName: "피타빵",
+    sideReason: "담백한 빵과 함께면 든든한 한 끼가 돼요."
+  },
+  {
+    foodEmoji: "🍢",
+    foodName: "닭꼬치",
+    foodReason: "달콤짭짤한 소스를 바른 쫄깃한 길거리 인기 간식이에요.",
+    digimonName: "훗바몬",
+    digimonEmoji: "🐔",
+    digimonReason: "활기찬 훗바몬처럼, 신나게 즐기는 닭꼬치가 잘 어울려요.",
+    sideEmoji: "🌶️",
+    sideName: "고추냉이 소스",
+    sideReason: "알싸한 매운맛이 포인트를 더해줘요."
+  },
+  {
+    foodEmoji: "🍰",
+    foodName: "치즈케이크",
+    foodReason: "진하고 부드러운 크림치즈의 풍미가 가득한 디저트예요.",
+    digimonName: "라군몬",
+    digimonEmoji: "🐸",
+    digimonReason: "차분하고 부드러운 라군몬처럼, 진한 치즈케이크가 잘 어울려요.",
+    sideEmoji: "🫐",
+    sideName: "블루베리 소스",
+    sideReason: "새콤한 베리가 진한 맛을 산뜻하게 해줘요."
+  },
+  {
+    foodEmoji: "🍜",
+    foodName: "쌀국수",
+    foodReason: "맑고 깊은 육수에 부드러운 쌀면을 즐기는 베트남 대표 메뉴예요.",
+    digimonName: "리코몬",
+    digimonEmoji: "🐈",
+    digimonReason: "우아하고 날렵한 리코몬처럼, 깔끔한 쌀국수가 잘 어울려요.",
+    sideEmoji: "🌿",
+    sideName: "고수",
+    sideReason: "향긋한 허브가 풍미를 한층 살려줘요."
+  },
+  {
+    foodEmoji: "🍔",
+    foodName: "치즈버거",
+    foodReason: "고소한 치즈가 듬뿍 녹아든 든든한 버거 메뉴예요.",
+    digimonName: "그라니몬",
+    digimonEmoji: "🗿",
+    digimonReason: "단단하고 묵직한 그라니몬처럼, 두툼한 치즈버거가 잘 어울려요.",
+    sideEmoji: "🧅",
+    sideName: "어니언링",
+    sideReason: "바삭한 식감이 버거와 잘 어울려요."
+  },
+  {
+    foodEmoji: "🍧",
+    foodName: "망고빙수",
+    foodReason: "달콤한 망고와 시원한 얼음이 어우러진 인기 여름 디저트예요.",
+    digimonName: "팜몬",
+    digimonEmoji: "🌺",
+    digimonReason: "화사하고 열대적인 팜몬처럼, 달콤한 망고빙수가 잘 어울려요.",
+    sideEmoji: "🥭",
+    sideName: "망고주스",
+    sideReason: "같은 망고 풍미로 조화를 이뤄요."
+  },
+  {
+    foodEmoji: "🍝",
+    foodName: "봉골레파스타",
+    foodReason: "조개 육수의 감칠맛이 면에 깊게 배어든 해산물 파스타예요.",
+    digimonName: "웨어가루몬",
+    digimonEmoji: "🌊",
+    digimonReason: "역동적이고 강렬한 웨어가루몬처럼, 시원한 조개 향의 파스타가 잘 어울려요.",
+    sideEmoji: "🥖",
+    sideName: "바게트",
+    sideReason: "남은 육수를 마지막까지 즐길 수 있어요."
+  },
+  {
+    foodEmoji: "🥮",
+    foodName: "월병",
+    foodReason: "달콤한 소가 가득 들어간 쫀득한 전통 디저트예요.",
+    digimonName: "문몬",
+    digimonEmoji: "🌙",
+    digimonReason: "달빛을 닮은 문몬처럼, 둥근 월병이 잘 어울려요.",
+    sideEmoji: "🍵",
+    sideName: "우롱차",
+    sideReason: "은은한 향이 달콤함을 개운하게 정리해줘요."
+  },
+  {
+    foodEmoji: "🌭",
+    foodName: "핫도그",
+    foodReason: "바삭한 튀김옷 속 쫄깃한 소시지가 매력적인 길거리 간식이에요.",
+    digimonName: "스팅몬",
+    digimonEmoji: "🐝",
+    digimonReason: "톡 쏘는 매력의 스팅몬처럼, 케찹과 머스타드가 톡 쏘는 핫도그가 잘 어울려요.",
+    sideEmoji: "🧂",
+    sideName: "설탕",
+    sideReason: "달콤함을 더해 클래식한 맛을 완성해줘요."
+  },
+  {
+    foodEmoji: "🍲",
+    foodName: "짬뽕",
+    foodReason: "얼큰하고 진한 국물에 해산물이 가득한 인기 중화요리예요.",
+    digimonName: "레드베라몬",
+    digimonEmoji: "🔥",
+    digimonReason: "뜨거운 불꽃의 레드베라몬처럼, 얼큰한 짬뽕이 잘 어울려요.",
+    sideEmoji: "🥟",
+    sideName: "군만두",
+    sideReason: "바삭한 만두가 얼큰한 국물과 잘 어울려요."
+  }
+];
+
+// 최근에 나온 디지몬은 3번 안에는 다시 나오지 않도록 기록
+let recentDigimons = [];
+
+function recommend() {
+  const historyLimit = Math.min(3, data.length - 1);
+
+  let candidates = data
+    .map((d, i) => i)
+    .filter(i => !recentDigimons.includes(data[i].digimonName));
+
+  // 후보가 없으면(데이터가 적을 때) 제한을 완화
+  if (candidates.length === 0) {
+    candidates = data.map((d, i) => i);
+  }
+
+  const idx = candidates[Math.floor(Math.random() * candidates.length)];
+
+  recentDigimons.push(data[idx].digimonName);
+  if (recentDigimons.length > historyLimit) {
+    recentDigimons.shift();
+  }
+
+  const d = data[idx];
+
+  document.getElementById('foodPhoto').textContent = d.foodEmoji;
+  document.getElementById('foodName').textContent = d.foodName;
+  document.getElementById('foodReason').textContent = d.foodReason;
+
+  document.getElementById('digimonEmoji').textContent = d.digimonEmoji;
+  document.getElementById('digimonName').textContent = d.digimonName;
+  document.getElementById('digimonReason').textContent = d.digimonReason;
+
+  document.getElementById('sideEmoji').textContent = d.sideEmoji;
+  document.getElementById('sideName').textContent = d.sideName;
+  document.getElementById('sideReason').textContent = d.sideReason;
+
+  const card = document.getElementById('card');
+  card.classList.remove('show');
+  void card.offsetWidth;
+  card.classList.add('show');
+}
+</script>
+</body>
+</html>
