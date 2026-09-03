@@ -493,17 +493,17 @@ st.markdown(
 st.write("")  # 여백을 위한 빈 줄
 
 # -----------------------------------------------------------
-# 6. 메뉴 추천 버튼
+# 6. 메뉴 추천 버튼 (맨 위)
+#    - 이 버튼은 처음 추천을 시작할 때만 사용합니다.
 #    - use_container_width=True로 버튼을 넓게 보이게 합니다.
 # -----------------------------------------------------------
-button_label = "🍽️ 메뉴 추천" if st.session_state.selected_menu is None else "🔄 다시 추천"
-
-if st.button(button_label, use_container_width=True, type="primary"):
+if st.button("🍽️ 메뉴 추천", use_container_width=True, type="primary"):
     st.session_state.selected_menu = pick_random_menu()
 
 # -----------------------------------------------------------
 # 7. 추천 결과 보여주기
 #    - 아직 버튼을 누르지 않았다면 결과 영역은 보이지 않습니다.
+#    - 결과가 나온 자리 맨 아래에는 "다시 추천" 버튼을 별도로 둡니다.
 # -----------------------------------------------------------
 menu = st.session_state.selected_menu
 
@@ -537,6 +537,12 @@ if menu is not None:
         """,
         unsafe_allow_html=True,
     )
+
+    # (3) 결과 바로 아래에 있는 "다시 추천" 버튼
+    #     - key를 다르게 지정해서 위쪽 버튼과 구분되는 별개의 버튼으로 만듭니다.
+    if st.button("🔄 다시 추천", use_container_width=True, key="retry_button"):
+        st.session_state.selected_menu = pick_random_menu()
+        st.rerun()  # 결과를 새로고침해서 바로 화면에 반영합니다.
 else:
     # 버튼을 아직 누르지 않았을 때 보여줄 안내 문구
     st.info("위의 '메뉴 추천' 버튼을 눌러서 오늘의 메뉴와 디지몬을 확인해보세요!")
