@@ -581,6 +581,33 @@ MENU_DATA = [
 ]
 
 # -----------------------------------------------------------
+# 3-1. 같이 먹기 좋은 음식(사이드 메뉴) 목록
+#    - 메인 음식과는 별도로, "곁들이면 좋은 음식"을 랜덤으로 하나 더 보여주기 위한 목록입니다.
+#    - (이모지, 이름) 짝으로 이루어진 간단한 리스트예요.
+# -----------------------------------------------------------
+SIDE_FOODS = [
+    ("🥤", "콜라"), ("🧋", "밀크티"), ("🍺", "탄산음료"), ("🥛", "우유"),
+    ("☕", "아메리카노"), ("🍵", "녹차"), ("🧃", "과일주스"), ("🍶", "식혜"),
+    ("🥒", "오이피클"), ("🥬", "김치"), ("🥗", "샐러드"), ("🍟", "감자튀김"),
+    ("🧅", "어니언링"), ("🍞", "식빵"), ("🥖", "바게트"), ("🥟", "만두"),
+    ("🍚", "흰쌀밥"), ("🍙", "주먹밥"), ("🥚", "삶은 달걀"), ("🍳", "달걀후라이"),
+    ("🧀", "치즈스틱"), ("🍪", "쿠키"), ("🍩", "도넛"), ("🍦", "아이스크림"),
+    ("🍇", "포도"), ("🍓", "딸기"), ("🍊", "귤"), ("🥭", "망고"),
+    ("🌶️", "청양고추"), ("🧄", "마늘"), ("🥕", "당근스틱"), ("🫒", "올리브"),
+]
+
+
+def pick_random_side(main_food_name):
+    """
+    메인 음식과 이름이 겹치지 않는 사이드 음식을 하나 랜덤으로 골라주는 함수.
+    반환값은 (이모지, 이름) 형태의 튜플입니다.
+    """
+    candidates = [item for item in SIDE_FOODS if item[1] != main_food_name]
+    if not candidates:
+        candidates = SIDE_FOODS
+    return random.choice(candidates)
+
+# -----------------------------------------------------------
 # 4. 세션 상태(session_state) 준비
 #    - 스트림릿은 버튼을 누를 때마다 코드를 처음부터 다시 실행하기 때문에,
 #      "이전에 골랐던 결과"나 "최근에 나온 디지몬 목록"을 기억하려면
@@ -619,6 +646,12 @@ def pick_random_menu():
     st.session_state.recent_digimons.append(chosen["digimon_name"])
     if len(st.session_state.recent_digimons) > history_limit:
         st.session_state.recent_digimons.pop(0)
+
+    # 메인 음식과 겹치지 않는 사이드 음식도 하나 골라서 함께 담아줍니다.
+    side_emoji, side_name = pick_random_side(chosen["food_name"])
+    chosen = dict(chosen)  # 원본 데이터는 그대로 두고, 복사본에만 사이드 정보를 추가합니다.
+    chosen["side_emoji"] = side_emoji
+    chosen["side_name"] = side_name
 
     return chosen
 
@@ -680,6 +713,17 @@ if menu is not None:
     )
     st.markdown(
         f'<div class="reason-box">{menu["food_reason"]}</div>',
+        unsafe_allow_html=True,
+    )
+
+    # (1-1) 같이 먹기 좋은 음식 한 가지도 함께 보여줍니다.
+    st.markdown(
+        f"""
+        <div class="reason-box" style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:32px;">{menu["side_emoji"]}</span>
+            <span>같이 먹으면 좋아요: <b>{menu["side_name"]}</b></span>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
